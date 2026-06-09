@@ -1,8 +1,17 @@
 const express = require("express");
+const cors = require("cors");
 const { createClient } = require("@supabase/supabase-js");
 require("dotenv").config();
 
-const app = express(); // ⭐ THIS WAS MISSING
+const app = express();
+
+// ⭐ ALLOW YOUR WEBSITE TO ACCESS YOUR BACKEND
+app.use(cors({
+  origin: "https://theaetherclothing.com",
+  methods: ["POST", "GET"],
+  allowedHeaders: ["Content-Type"]
+}));
+
 app.use(express.json());
 
 const supabase = createClient(
@@ -13,7 +22,7 @@ const supabase = createClient(
 app.post("/order", async (req, res) => {
   const { name, email, address, items, total, payment_method } = req.body;
 
-  console.log("Received order:", req.body); // DEBUG
+  console.log("Received order:", req.body);
 
   const { data, error } = await supabase
     .from("orders")
@@ -22,7 +31,7 @@ app.post("/order", async (req, res) => {
         name,
         email,
         address,
-        item: items, // ⭐ MUST MATCH YOUR COLUMN NAME
+        item: items, // ⭐ matches your Supabase column
         total,
         payment_method,
         status: "pending"
@@ -31,11 +40,11 @@ app.post("/order", async (req, res) => {
     .select();
 
   if (error) {
-    console.log("SUPABASE ERROR:", error); // ⭐ SHOW REAL ERROR
+    console.log("SUPABASE ERROR:", error);
     return res.status(500).json({ error: error.message });
   }
 
-  console.log("Inserted:", data); // DEBUG
+  console.log("Inserted:", data);
   res.json({ success: true, orderId: data[0].id });
 });
 
