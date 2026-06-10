@@ -5,7 +5,7 @@ require("dotenv").config();
 
 const app = express();
 
-// ⭐ ALLOW YOUR WEBSITE TO ACCESS YOUR BACKEND
+// ⭐ ALLOW YOUR WEBSITE DOMAIN
 app.use(cors({
   origin: "https://theaetherclothing.com",
   methods: ["POST", "GET"],
@@ -31,7 +31,7 @@ app.post("/order", async (req, res) => {
         name,
         email,
         address,
-        item: items, // ⭐ matches your Supabase column
+        item: items,
         total,
         payment_method,
         status: "pending"
