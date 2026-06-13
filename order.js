@@ -51,7 +51,7 @@ async function sendOrderEmails(order) {
   // ADMIN EMAIL (YOU)
   await resend.emails.send({
     from: "Aether <orders@aether.com>",
-    to: "YOUR_EMAIL_HERE", // <-- replace with your real email
+    to: theaetherclothing@gmail.com, // <-- replace with your real email
     subject: `New Order Received #${order.orderId}`,
     html: `
       <h2>New Order Received</h2>
